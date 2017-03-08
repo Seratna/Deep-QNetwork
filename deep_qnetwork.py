@@ -72,9 +72,9 @@ class DeepQNetwork(object):
 
 
 def main():
-    dqn = DeepQNetwork([4, 50, 50, 2],
-                       exp_length=3000,
-                       gamma=0.7)
+    dqn = DeepQNetwork([4, 50, 50, 2],  # structure of neural net
+                       exp_length=3000,  # size of experience pool
+                       gamma=0.7)  # discount factor
 
     env = gym.make('CartPole-v0')
     step_count = 0
@@ -92,13 +92,16 @@ def main():
                 action = dqn.choose_action(observation)
                 new_observation, _, done, info = env.step(action)
 
+                # compute reward
                 x, x_dot, theta, theta_dot = new_observation
                 r1 = (env.x_threshold - abs(x))/env.x_threshold - 0.8
                 r2 = (env.theta_threshold_radians - abs(theta))/env.theta_threshold_radians - 0.5
                 reward = r1 + r2
 
+                # record
                 dqn.record(observation, action, reward, new_observation)
 
+                # learn
                 if step_count>1000:
                     dqn.learn(batch_size=320, session=sess)
 
