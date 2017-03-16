@@ -55,10 +55,8 @@ class DataManager(object):
 
 
 def main():
-    # dm = DataManager()
-    # dm.download('companies.json')
-    with open('data/__PRN.json', 'w') as file:
-        file.write('test')
+    dm = DataManager()
+    dm.download('companies.json')
 
 
 if __name__ == '__main__':
