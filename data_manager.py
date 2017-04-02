@@ -1,6 +1,7 @@
 import json
 
 import requests
+from requests import ConnectionError, Timeout,  HTTPError
 
 
 class DataManager(object):
@@ -30,7 +31,7 @@ class DataManager(object):
                 timeout = False
                 try:
                     r = requests.get(url, params=params, timeout=(3.05, 3.05))
-                except (requests.exceptions.ReadTimeout, requests.exceptions.ConnectTimeout) as e:
+                except (ConnectionError, Timeout,  HTTPError) as e:
                     print(e)
                     timeout = True
 
