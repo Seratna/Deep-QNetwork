@@ -52,7 +52,7 @@ class DataManager(object):
                 else:
                     quotes.extend(ans['query']['results']['quote'])
 
-            quotes.reverse()
+        quotes.reverse()
 
         with open('prices/{}.json'.format(ticker), 'w') as file:
             json.dump(quotes, file)
