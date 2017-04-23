@@ -61,11 +61,10 @@ class DataManager(object):
         with open(companies_file) as file:
             companies = json.load(file)
         for i, company in enumerate(companies):
-            if i > 2100:
-                symbol = company['Symbol']
-                print('downloading data of', symbol, '{}/{}'.format(i+1, len(companies)))
+            symbol = company['Symbol']
+            print('downloading data of', symbol, '{}/{}'.format(i+1, len(companies)))
 
-                self.get_prices(symbol)
+            self.get_prices(symbol)
 
 
 def main():
