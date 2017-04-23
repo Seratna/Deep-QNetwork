@@ -1,4 +1,5 @@
 import json
+import socket
 
 import requests
 
@@ -30,8 +31,12 @@ class DataManager(object):
                 timeout = False
                 try:
                     r = requests.get(url, params=params, timeout=(3.05, 3.05))
-                except (requests.exceptions.ReadTimeout, requests.exceptions.ConnectTimeout) as e:
+                except requests.exceptions.Timeout as e:
                     print(e)
+                    timeout = True
+                except Exception as e:
+                    print(e)
+                    print('type:', type(e))
                     timeout = True
 
                 if (not timeout) and r:
@@ -48,10 +53,11 @@ class DataManager(object):
         with open(companies_file) as file:
             companies = json.load(file)
         for i, company in enumerate(companies):
-            symbol = company['Symbol']
-            print('downloading data of', symbol, '{}/{}'.format(i+1, len(companies)))
+            if i > 2100:
+                symbol = company['Symbol']
+                print('downloading data of', symbol, '{}/{}'.format(i+1, len(companies)))
 
-            self.get_prices(symbol)
+                self.get_prices(symbol)
 
 
 def main():
