@@ -32,11 +32,7 @@ class DataManager(object):
                 timeout = False
                 try:
                     r = requests.get(url, params=params, timeout=(3.05, 3.05))
-<<<<<<< HEAD
-                except requests.exceptions.Timeout as e:
-=======
                 except (ConnectionError, Timeout,  HTTPError) as e:
->>>>>>> c363922f71d04581319c02866ed7911ce7cac756
                     print(e)
                     timeout = True
                 except Exception as e:
@@ -48,10 +44,17 @@ class DataManager(object):
                     break
 
             ans = r.json()
-            if ans['query']['count'] > 0:
-                quotes += ans['query']['results']['quote']
+            count = ans['query']['count']
 
-        with open('data/{}.json'.format(ticker), 'w') as file:
+            if count > 0:
+                if count == 1:
+                    quotes.append(ans['query']['results']['quote'])
+                else:
+                    quotes.extend(ans['query']['results']['quote'])
+
+            quotes.reverse()
+
+        with open('prices/{}.json'.format(ticker), 'w') as file:
             json.dump(quotes, file)
 
     def download(self, companies_file):
